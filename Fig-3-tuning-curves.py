@@ -35,52 +35,59 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.axes_grid1 import ImageGrid
 
 from model import *
-from graphics import *
-from parameters import *
 from projections import *
 
-n = 200
-Rho = np.linspace(0,25,n)
-print Rho
 
-Z = np.zeros(shape=(n, colliculus_shape[1]))
-shape = colliculus_shape
+model = Model()
 
-for i in range(len(Rho)):
-     x,y = polar_to_logpolar(Rho[i]/90.0,0)
-     x *= 90
-     y *= 90
-     Y,X = np.mgrid[0:shape[1],0:shape[0]]
-     X = X / float(shape[0]) * 90
-     Y = Y / float(shape[1]) * 90
-     R = ((X-x)**2+(Y-y)**2)
-     c = 20*stimulus_size/2.35482
-     SC_V = np.exp(-R/(2*c*c))
-     Z[i] = SC_V[colliculus_shape[0]/2]
+p = 200
+X = np.linspace(0,25,p)
+Z = np.zeros(shape=(p, colliculus_shape[1]))
 
-     if x in [3,5,10,15]:
-          model = Model()
-          SC_V *= self.SV_mask
-          ax = plt.subplot(111)
-          logpolar_frame(ax)
-          logpolar_imshow(ax, SC_V)
-          plt.show()
+# size = 2.0 °, intensity = 0.5
+if 0 or not os.path.exists('data/tuning.npy'):
+     for i in range(p):
+         model.reset()
+         model.R = stimulus((X[i], 0.0), size=2.0, intensity=0.5)
+         model.run(duration=20*second, dt=5*millisecond, epsilon=0.001)
+         Z[i] = model.SC_V[colliculus_shape[0]/2]
+         print "%d/%d: %f" %  (i,p, Z[i].max())
+     np.save('data/tuning.npy', Z)
+else:
+    Z = np.load('data/tuning.npy')
 
-fig = plt.figure(figsize=(10,5), facecolor='w')
+
+fig = plt.figure(figsize=(6,5), facecolor='w')
+ax = plt.subplot(1,1,1)
+ax.tick_params(direction="outward")
+ax.spines['right'].set_color('none')
+ax.spines['top'].set_color('none')
+# ax.spines['left'].set_color('none')
+ax.spines['bottom'].set_color('none')
+ax.xaxis.set_ticks_position('bottom')
+ax.yaxis.set_ticks_position('left')
+# ax.spines['bottom'].set_position(('data',-0.05))
+
 for i in [3,5,10,15]:
     x,y = polar_to_logpolar( i/90.0, 0 )
     index = int(x*Z.shape[1])
-    plt.plot(Rho,Z[:,index], linewidth=2) #, color='k')
-    # plt.plot(X_ideal,Z_ideal[:,index], '--', linewidth=1.5, color='.5')
-
-#plt.xlim(0.0, 25.0)
-#plt.ylim(0.0,  1.1)
-#plt.yticks([0.0,0.8,1.0],['0','400','500'])
-#plt.vlines([5,10,15], [0,0,0], [1.1,1.1,1.1],  linewidth=1, color='.75')
-#plt.xticks([2.5,10,25])
-#plt.xlim(0,60)
-#plt.grid()
-#plt.xlabel('Target eccentricity ($^\circ$)')
-#plt.ylabel('Discharge rate (spike/s)')
-# # plt.savefig('tuning-curves.pdf')
+    plt.plot(X,Z[:,index], linewidth=1.5, color='k')
+ax.text(2.8, 1.05, u"a",
+             ha="left", va="bottom", fontsize=10, fontweight='bold')
+ax.text(5., 0.75, u"b",
+                      ha="left", va="bottom", fontsize=10, fontweight='bold')
+ax.text(9.5, 0.4, u"c",
+         ha="left", va="bottom", fontsize=10, fontweight='bold')
+ax.text(13.5, 0.25, u"d",
+             ha="left", va="bottom", fontsize=10, fontweight='bold')
+plt.xlim(0.0, 25.0)
+plt.ylim(0.0,  1.1)
+plt.yticks([0.0,1.0],['0','500'])
+#plt.vlines([3,5,10,15], [0,0,0,0], [1.1,1.1,1.1,1.1],  linewidth=1, color='.75')
+plt.xticks([0,3,5,10,15,25])
+plt.xlabel('Target eccentricity ($^\circ$)')
+plt.ylabel('Discharge rate (spike/s)')
+plt.savefig('figures/Fig-3.eps')
+plt.savefig('figures/Fig-3.pdf')
+plt.tight_layout()
 plt.show()

@@ -33,7 +33,6 @@ import os.path
 import itertools
 import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib import lines
 import matplotlib.gridspec as gridspec
 from matplotlib.ticker import MultipleLocator, FormatStrFormatter
 from mpl_toolkits.axes_grid1.inset_locator import inset_axes
@@ -131,7 +130,7 @@ if 0:
 
         ax1.add_patch(plt.Circle((2*x,2*y-1), radius=radius,  ec='k', fc='w', zorder=+10, alpha=.5))
         ax1.add_patch(plt.Circle((2*x,2*y-1), radius=radius,  ec='k', fc='none', zorder=+15))
-        plt.savefig('figures/lesion-after-%03d.pdf' % j)
+        plt.savefig('lesion-after-%03d.pdf' % j)
 #        plt.show()
 
 
@@ -144,28 +143,28 @@ if 1:
     matplotlib.rcParams['xtick.direction'] = 'out'
     matplotlib.rcParams['ytick.direction'] = 'out'
 
-    fig = plt.figure(figsize=(20,10))
+    fig = plt.figure(figsize=(8,12))
     fig.patch.set_color('w')
-    G = gridspec.GridSpec(2, 3)
-
+    G = gridspec.GridSpec(3, 2)
+    G.update(left=0.07, right=0.95, wspace=0.2, hspace=0.2, bottom=0.05,top=0.95)
 
     # Intact model
     ax = plt.subplot(G[0, 0], aspect=1)
     run(ax, None, "None", "Intact model")
-    ax.text(0.0, 1.0, 'A', va='top', ha='right',
+    ax.text(0.0, 1.0, 'a', va='top', ha='right',
             transform=ax.transAxes, fontsize=20, fontweight='bold')
 
     # Lesioned model
-    ax = plt.subplot(G[1, 0], aspect=1)
+    ax = plt.subplot(G[0, 1], aspect=1)
     run(ax, [(5,0),12], "(5,0)", "Lesioned model")
-    ax.text(0.0, 1.0, 'B', va='top', ha='right',
+    ax.text(0.0, 1.0, 'b', va='top', ha='right',
             transform=ax.transAxes, fontsize=20, fontweight='bold')
 
     red  = (1,.25,.25)
     blue = (.25,.25,1)
 
     #  Horizontal errors
-    ax = plt.subplot(G[0, 1:])
+    ax = plt.subplot(G[1, 0:])
     ax.set_axisbelow(True)
     ax.spines['right'].set_color('none')
     ax.spines['left'].set_color('none')
@@ -179,7 +178,7 @@ if 1:
     M = np.mean(D, axis=1) * 100
     E = np.std(D,axis=1) * 100
     ax.bar(X-0.5, M, .5, yerr=E, label='Intact model', color=blue, edgecolor='w', ecolor=blue)
-
+    print M, np.mean(M) ,np.std(M)
     S = np.load('data/lesion-(5,0).npy').reshape(11,7,4)
     D = np.sqrt( (S[...,2]-S[...,0])**2 +  (S[...,3]-S[...,1])**2)
     X = np.array(targets_rho)
@@ -201,41 +200,16 @@ if 1:
     plt.text(0, 21, "Mean encoding error along rosto-caudal axis",
              va='bottom',ha='left',color='k', fontsize=16)
 
-
-    ax.annotate("Lesion site & extents",
-                xy=(5, 0), xycoords='data',
-                xytext=(5, -2.5), textcoords='data', ha='center',
-                arrowprops=dict(arrowstyle="->", color="k"))
-    ax.text(0.0, 1.0, 'C', va='top', ha='right',
+    ax.annotate("Lesion site",
+                  xy=(5, 0), xycoords='data',
+                  xytext=(5, -2.5), textcoords='data', ha='center',
+                  arrowprops=dict(arrowstyle="->", color="k"))
+    ax.text(0.0, 1.0, 'c', va='top', ha='right',
             transform=ax.transAxes, fontsize=20, fontweight='bold')
-
-    # To draw the extent of the lesion, we need to convert the size (radius in
-    # number of neurons) into a log-polar angular extent.
-    x,y = np.array([[3.5, 7.0], [-.5, -.5]])
-    line = lines.Line2D(x, y, lw=5., color='r', alpha=0.4)
-    ax.add_line(line)
-    line.set_clip_on(False)
-
-    # model = Model()
-    # ratio = float(model.SC_V.shape[1]) / float(model.R.shape[1])
-    # #polar_to_logpolar(5 - ,0)
-    # size = 12
-    # rho,theta = 5.0, 0.0
-    # rho,theta = rho/90.0, np.pi*theta/180.0
-    # #x,y = polar_to_logpolar(rho,theta)
-    # #print x,y
-
-    # r = 5.0/polar_to_logpolar(rho, theta)[0]
-    # print r*polar_to_logpolar(rho, theta)[0]
-    # print r*polar_to_logpolar(rho - ratio*size/(2*90.0) , theta)[0]
-    # print r*polar_to_logpolar(rho + ratio*size/(2*90.0) , theta)[0]
-
-
-
 
 
     #  Vertical errors
-    ax = plt.subplot(G[1, 1:])
+    ax = plt.subplot(G[2, 0:])
     ax.set_axisbelow(True)
     ax.spines['right'].set_color('none')
     ax.spines['left'].set_color('none')
@@ -249,7 +223,7 @@ if 1:
     M = np.mean(D, axis=0) * 100
     E = np.std(D, axis=0) * 100
     ax.bar(X-2.5, M, 2.5, yerr=E, label='Intact model', color=blue, edgecolor='w', ecolor=blue)
-
+    print M, np.mean(M) ,np.std(M)
     S = np.load('data/lesion-(5,0).npy').reshape(11,7,4)
     D = np.sqrt( (S[...,2]-S[...,0])**2 +  (S[...,3]-S[...,1])**2)
     X = np.array(targets_theta)
@@ -263,26 +237,22 @@ if 1:
                [u"-45°",u"-30°",u"-15°", u"15°", u"30°", u"45°"])
     plt.ylim(0,25)
     plt.yticks([0,5,10,15,20], [u"0%",u"5%",u"10%",u"15%",u"20%"])
+    #ax.grid(which='major', axis='y', linewidth=0.75, linestyle='-', color='1.',zorder=-10)
     ax.grid(which='major', axis='y', linewidth=0.75, linestyle='-', color='0.5',zorder=-10)
-
     #[t.set_color('0.5') for t in ax.xaxis.get_ticklabels()]
     #[t.set_color('0.5') for t in ax.yaxis.get_ticklabels()]
     [t.set_alpha(0.0) for t in ax.yaxis.get_ticklines()]
     ax.legend(frameon=False, fontsize=12)
     plt.text(-50, 21, "Mean encoding error along vertical axis",
              va='bottom',ha='left',color='k', fontsize=16)
-    ax.annotate("Lesion site & extents",
-                  xy=(0, 0.0), xycoords='data',
-                  xytext=(0, -3.5), textcoords='data', ha='center',
+    ax.annotate("Lesion site",
+                  xy=(0, 0), xycoords='data',
+                  xytext=(0, -2.5), textcoords='data', ha='center',
                   arrowprops=dict(arrowstyle="->", color="k"))
-    ax.text(0.0, 1.0, 'D', va='top', ha='right',
+    ax.text(0.0, 1.0, 'd', va='top', ha='right',
             transform=ax.transAxes, fontsize=20, fontweight='bold')
 
-    x,y = np.array([[-18, 18], [-.5, -.5]])
-    line = lines.Line2D(x, y, lw=5., color='r', alpha=0.4)
-    ax.add_line(line)
-    line.set_clip_on(False)
-
-
-    plt.savefig("figures/fig-lesion.pdf")
+    plt.savefig("figures/Fig-2.pdf")
+    #plt.tight_layout()
+    plt.savefig("figures/Fig-2.eps",format='eps', dpi=1000)
     plt.show()
