@@ -34,7 +34,7 @@ import numpy as np
 from helper import *
 from graphics import *
 from projections import *
-
+from stimulus import *
 
 if __name__ == '__main__':
     import matplotlib.pyplot as plt
@@ -64,12 +64,48 @@ if __name__ == '__main__':
     SC = R[P[...,0], P[...,1]]
 
 
-    fig = plt.figure(figsize=(10,8), facecolor='w')
-    ax1, ax2 = ImageGrid(fig, 111, nrows_ncols=(1,2), axes_pad=0.5)
+    fig = plt.figure(figsize=(10,15), facecolor='w')
+    ######################
+    
+    ax1, ax2 = ImageGrid(fig, 211, nrows_ncols=(1,2), axes_pad=0.5)
     polar_frame(ax1, legend=True)
     polar_imshow(ax1, R, vmin=0, vmax=5)
     logpolar_frame(ax2, legend=True)
     logpolar_imshow(ax2, SC, vmin=0, vmax=5)
+    ax1.text(1.1, 1.1, u"a",
+          ha="left", va="bottom", fontsize=20, fontweight='bold')
+        #ax1.text(0., -1.28, u"0°                                                     90°",
+        #      ha="left", va="bottom", fontsize=10)
+    ################################
+    
+    ax1, ax2 = ImageGrid(fig, 212, nrows_ncols=(1,2), axes_pad=0.5)
+    polar_frame(ax1, legend=True,reduced=True)
+    '''
+    zax = zoomed_inset_axes(ax1, 6, loc=1)
+    polar_frame(zax, zoom=True)
+    zax.set_xlim(0.0, 0.15)
+    zax.set_xticks([])
+    zax.set_ylim(-.05, .05)
+    zax.set_yticks([])
+    zax.set_frame_on(True)
+    mark_inset(ax1, zax, loc1=2, loc2=4, fc="none", ec="0.5")
+    '''
+    # Stimuli luminances are not additive
+    R = np.maximum(stimulus(position=(1,0)), stimulus(position=(5,0)))
+    R = np.maximum(R , stimulus(position=(10,0)))
+    polar_imshow(ax1, R,reduced=True)
+    #polar_imshow(zax, R)
+    
+    logpolar_frame(ax2, legend=True)
+    P = retina_projection()
+    SC = R[P[...,0], P[...,1]]
+    logpolar_imshow(ax2, SC)
+    ax1.text(1.1, 1.1, u"b",
+                 ha="left", va="bottom", fontsize=20, fontweight='bold')
 
-#    plt.savefig("figures/fig-checkerboard.pdf")
+
+    fig.subplots_adjust(left=0.05, bottom=0.05, right=0.95, top=0.95,
+                                        wspace=0.15, hspace=0.2)
+    plt.savefig("Fig-1.pdf")
+    plt.savefig("Fig-1.eps")
     plt.show()

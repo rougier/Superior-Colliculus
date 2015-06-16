@@ -61,10 +61,10 @@ def run(model, ax, y1=None):
     Y = np.linspace(0, n, n)
     X, Y = np.meshgrid(X, Y)
 
-    ax.plot_surface(X, Y, Z*500, rstride=5, cstride=2, edgecolors='.5',
-                    color='w', linewidth=.1, antialiased=True, shade=True)
+    ax.plot_surface(X, Y, Z*500, rstride=8, cstride=8,linewidth=.4,  edgecolors='k',
+                color="w", antialiased=True, shade=True)
     lw = 1.5
-
+    
     if y1 is None:
         y1 = model.SC_V[:,x].argmax()
         y2 = colliculus_shape[1] - y1
@@ -81,27 +81,31 @@ def run(model, ax, y1=None):
         #ax.plot(Y[:,y2], Z[:,y2]*500, zs=(2*(y2/128.)-1)*90, zdir='x', zorder=50, color='r')
         ax.plot(Y[:,y3], Z[:,y3]*500, zs=-90, zdir='x', zorder=-50, color='k', lw=lw)
         ax.plot(Y[:,y3], Z[:,y3]*500, zs=(2*(y3/128.)-1)*90, zdir='x', zorder=50, color='k', lw=lw)
+    fontsize=7
 
 
     ax.set_xlim(-90,90)
     ax.set_ylim(0,250)
-    ax.set_zlim(-10,350)
-    ax.set_xlabel(u'Stimuli position [°]')
-    ax.set_ylabel('Time [ms]')
-    ax.set_zlabel('Discharge rate (spike/s)')
+    ax.set_zlim(0,300)
+    ax.set_xlabel(u'Stimuli position [°]', fontsize=fontsize,labelpad=4)
+    ax.set_ylabel('Time [ms]', fontsize=fontsize,labelpad=5)
+    ax.set_zlabel('Discharge rate (spike/s)', fontsize=fontsize,labelpad=5)
+    ax.tick_params(axis='both', which='major', labelsize=fontsize-1)
+    ax.set_zticks([0,100,200,300])
 
 
-
-plt.figure(figsize=(20,5), facecolor='w')
+plt.figure(figsize=(2.5,6.5), facecolor='w',dpi=100)
 
 model = Model()
 
 model.reset()
 model.R = stimulus((5.0, -30), size=1, intensity=1)
-ax = plt.subplot(131, projection='3d')
+
+
+ax = plt.subplot(311, projection='3d')
 run(model,ax)
-ax.text2D(0.0, 1.0, "A", va='top', ha='right',
-          transform=ax.transAxes, fontsize=20, fontweight='bold')
+ax.text2D(0.0, 1.0, "a", va='top', ha='right',
+          transform=ax.transAxes, fontsize=10, fontweight='bold')
 
 
 # Get location of -20/+20 on SC
@@ -115,19 +119,25 @@ y1 = model.SC_V[:,x].argmax()
 model.reset()
 model.R = np.maximum( stimulus((5.0, -20), size=1, intensity=1) ,
                       stimulus((5.0, +20), size=1, intensity=1) )
-ax = plt.subplot(132, projection='3d')
+
+
+ax = plt.subplot(312, projection='3d')
 run(model, ax, y1)
-ax.text2D(0.0, 1.0, 'B', va='top', ha='right',
-          transform=ax.transAxes, fontsize=20, fontweight='bold')
+ax.text2D(0.0, 1.0, 'b', va='top', ha='right',
+          transform=ax.transAxes, fontsize=10, fontweight='bold')
 
 
 model.reset()
 model.R = np.maximum( stimulus((5.0, -30), size=1, intensity=1) ,
                       stimulus((5.0, +30), size=1, intensity=1) )
-ax = plt.subplot(133, projection='3d')
-run(model,ax)
-ax.text2D(0.0, 1.0, 'C', va='top', ha='right',
-          transform=ax.transAxes, fontsize=20, fontweight='bold')
 
-plt.savefig('figures/fig-selection.pdf')
+ax =  plt.subplot(313, projection='3d')
+run(model,ax)
+ax.text2D(0.0, 1.0, 'c', va='top', ha='right',
+          transform=ax.transAxes, fontsize=10, fontweight='bold')
+ax.grid(color="k", alpha="1")
+plt.tight_layout()
+
+plt.savefig('Fig-5.pdf')
+plt.savefig('Fig-5.eps')
 plt.show()
