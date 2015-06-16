@@ -197,7 +197,7 @@ plt.text(50, +.2, 'b',
          bbox=dict(boxstyle='round', fc="w", ec="k"))
 fig.subplots_adjust(left=0.09, bottom=0.05, right=0.95, top=0.95,
                     wspace=0.05, hspace=0.15)
-plt.savefig("Fig-6.eps")
-plt.savefig("Fig-6.pdf")
+plt.savefig("figures/Fig-6.eps")
+plt.savefig("figures/Fig-6.pdf")
 
 plt.show()

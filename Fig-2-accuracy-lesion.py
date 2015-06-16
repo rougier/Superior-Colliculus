@@ -252,7 +252,7 @@ if 1:
     ax.text(0.0, 1.0, 'd', va='top', ha='right',
             transform=ax.transAxes, fontsize=20, fontweight='bold')
 
-    plt.savefig("Fig-2.pdf")
+    plt.savefig("figures/Fig-2.pdf")
     #plt.tight_layout()
-    plt.savefig("Fig-2.eps",format='eps', dpi=1000)
+    plt.savefig("figures/Fig-2.eps",format='eps', dpi=1000)
     plt.show()

@@ -106,6 +106,6 @@ if __name__ == '__main__':
 
     fig.subplots_adjust(left=0.05, bottom=0.05, right=0.95, top=0.95,
                                         wspace=0.15, hspace=0.2)
-    plt.savefig("Fig-1.pdf")
-    plt.savefig("Fig-1.eps")
+    plt.savefig("figures/Fig-1.pdf")
+    plt.savefig("figures/Fig-1.eps")
     plt.show()

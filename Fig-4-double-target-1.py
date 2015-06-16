@@ -200,7 +200,7 @@ fig.subplots_adjust(left=0.09, bottom=0.05, right=0.95, top=0.95,
 #ax.set_rasterized(True)
 #ax.set_rasterized(True)
 #ax.set_rasterized(True)
-plt.savefig("Fig-4.eps",format="eps")
-plt.savefig("Fig-4.pdf")
+plt.savefig("figures/Fig-4.eps",format="eps")
+plt.savefig("figures/Fig-4.pdf")
 
 plt.show()

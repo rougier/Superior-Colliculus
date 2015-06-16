@@ -138,6 +138,6 @@ ax.text2D(0.0, 1.0, 'c', va='top', ha='right',
 ax.grid(color="k", alpha="1")
 plt.tight_layout()
 
-plt.savefig('Fig-5.pdf')
-plt.savefig('Fig-5.eps')
+plt.savefig('figures/Fig-5.pdf')
+plt.savefig('figures/Fig-5.eps')
 plt.show()
