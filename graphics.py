@@ -94,10 +94,10 @@ def polar_frame(ax, title=None, legend=False, zoom=False, labels=True,reduced=Fa
         ax.xaxis.set_ticks_position('bottom')
         ax.spines['bottom'].set_position(('data',-1.2))
         ax.set_xticks([])
-        ax.text(0.0,-1.1, "$\longleftarrow$ Foveal",
-                  verticalalignment='top', horizontalalignment='left', size=12)
-        ax.text(1.0,-1.1, "Peripheral $\longrightarrow$",
-                  verticalalignment='top', horizontalalignment='right', size=12)
+        ax.text(0.0,-1.1, "$\\leftarrow$ Foveal",
+                  verticalalignment='top', horizontalalignment='left', size=17)
+        ax.text(1.0,-1.1, "Peripheral $\\rightarrow$",
+                  verticalalignment='top', horizontalalignment='right', size=17)
     else:
         ax.set_frame_on(False)
     if title:
@@ -155,9 +155,9 @@ def logpolar_frame(ax, title=None, legend=False, labels=True):
         ax.set_xticks([0,2])
         ax.set_xticklabels(['0', '4.8 (mm)'])
         ax.text(0.0,-1.1, "$\longleftarrow$ Rostral",
-                  verticalalignment='top', horizontalalignment='left', size=12)
+                  verticalalignment='top', horizontalalignment='left', size=17)
         ax.text(2,-1.1, "Caudal $\longrightarrow$",
-                  verticalalignment='top', horizontalalignment='right', size=12)
+                  verticalalignment='top', horizontalalignment='right', size=17)
     else:
         ax.set_frame_on(False)
     if title:

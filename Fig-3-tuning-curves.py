@@ -36,7 +36,8 @@ from mpl_toolkits.axes_grid1 import ImageGrid
 
 from model import *
 from projections import *
-
+font = {'size'   : 18}
+matplotlib.rc('font', **font)
 
 model = Model()
 
@@ -57,7 +58,7 @@ else:
     Z = np.load('data/tuning.npy')
 
 
-fig = plt.figure(figsize=(6,5), facecolor='w')
+fig = plt.figure(figsize=(8,7), facecolor='w')
 ax = plt.subplot(1,1,1)
 ax.tick_params(direction="outward")
 ax.spines['right'].set_color('none')
@@ -73,13 +74,13 @@ for i in [3,5,10,15]:
     index = int(x*Z.shape[1])
     plt.plot(X,Z[:,index], linewidth=1.5, color='k')
 ax.text(2.8, 1.05, u"a",
-             ha="left", va="bottom", fontsize=10, fontweight='bold')
+             ha="left", va="bottom", fontsize=16, fontweight='bold')
 ax.text(5., 0.75, u"b",
-                      ha="left", va="bottom", fontsize=10, fontweight='bold')
+                      ha="left", va="bottom", fontsize=16, fontweight='bold')
 ax.text(9.5, 0.4, u"c",
-         ha="left", va="bottom", fontsize=10, fontweight='bold')
+         ha="left", va="bottom", fontsize=16, fontweight='bold')
 ax.text(13.5, 0.25, u"d",
-             ha="left", va="bottom", fontsize=10, fontweight='bold')
+             ha="left", va="bottom", fontsize=16, fontweight='bold')
 plt.xlim(0.0, 25.0)
 plt.ylim(0.0,  1.1)
 plt.yticks([0.0,1.0],['0','500'])

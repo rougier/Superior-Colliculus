@@ -40,7 +40,9 @@ from graphics import *
 from stimulus import *
 from parameters import *
 from projections import *
-
+import matplotlib
+font = {'size'   : 18}
+matplotlib.rc('font', **font)
 
 # Decode function
 def decode(Z, xmin=+0.0, xmax=+2.0, ymin=-1.0, ymax=+1.0,):
@@ -110,7 +112,7 @@ else:
     np.save("data/double-target-intensity-15.npy",T15)
 
 
-fig = plt.figure(figsize=(8,10),dpi=100)
+fig = plt.figure(figsize=(10,11),dpi=100)
 fig.patch.set_color('w')
 G = gridspec.GridSpec(3, 3)
 
