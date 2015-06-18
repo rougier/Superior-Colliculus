@@ -40,7 +40,9 @@ from graphics import *
 from stimulus import *
 from parameters import *
 from projections import *
-
+import matplotlib
+font = {'size'   : 16}
+matplotlib.rc('font', **font)
 
 # Decode function
 def decode(Z, xmin=+0.0, xmax=+2.0, ymin=-1.0, ymax=+1.0,):
@@ -55,8 +57,8 @@ def decode(Z, xmin=+0.0, xmax=+2.0, ymin=-1.0, ymax=+1.0,):
 p = 100
 np.random.seed(123)
 
-if os.path.exists('data/double-target-intensity-2-5.npy'):
-    T5 = np.load('data/double-target-intensity-2-5.npy')
+if os.path.exists('data/double-target-5-1.npy'):
+    T5 = np.load('data/double-target-5-1.npy')
 else:
     rho = 5
     model= Model()
@@ -64,17 +66,17 @@ else:
     for i,theta in enumerate(np.linspace(10,45,p)):
         model.reset()
         model.R = np.maximum( stimulus((0.75*rho, -theta), size=1, intensity=1) ,
-                              stimulus((rho, +theta), size=1, intensity=1.5) )
+                             stimulus((rho, +theta), size=1., intensity=1.) )
         model.R += np.random.uniform(0,0.05,model.R.shape)
-
+                             
         model.run(duration=5*second, dt=5*millisecond, epsilon=0.0)
         x,y = decode(model.SC_V)
         print u"Δθ = %.2f: (%f,%f)" % (2*theta, x, y)
         T5[i] = x,y
-    np.save("data/double-target-intensity-2-5.npy",T5)
+    np.save("data/double-target-5-1.npy",T5)
 
-if os.path.exists('data/double-target-intensity-2-10.npy'):
-    T10 = np.load('data/double-target-intensity-2-10.npy')
+if os.path.exists('data/double-target-10-1.npy'):
+    T10 = np.load('data/double-target-10-1.npy')
 else:
     rho = 10
     model= Model()
@@ -82,17 +84,17 @@ else:
     for i,theta in enumerate(np.linspace(10,45,p)):
         model.reset()
         model.R = np.maximum( stimulus((0.75*rho, -theta), size=1, intensity=1) ,
-                              stimulus((rho, +theta), size=1, intensity=1.5) )
+                             stimulus((rho, +theta), size=1., intensity=1.) )
         model.R += np.random.uniform(0,0.05,model.R.shape)
-
+                             
         model.run(duration=5*second, dt=5*millisecond, epsilon=0.0)
         x,y = decode(model.SC_V)
         print u"Δθ = %.2f: (%f,%f)" % (2*theta, x, y)
         T10[i] = x,y
-    np.save("data/double-target-intensity-2-10.npy",T10)
+    np.save("data/double-target-10-1.npy",T10)
 
-if os.path.exists('data/double-target-intensity-2-15.npy'):
-    T15 = np.load('data/double-target-intensity-2-15.npy')
+if os.path.exists('data/double-target-15-1.npy'):
+    T15 = np.load('data/double-target-15-1.npy')
 else:
     rho = 15
     model= Model()
@@ -100,17 +102,17 @@ else:
     for i,theta in enumerate(np.linspace(10,45,p)):
         model.reset()
         model.R = np.maximum( stimulus((0.75*rho, -theta), size=1, intensity=1) ,
-                              stimulus((rho, +theta), size=1, intensity=1.5) )
+                             stimulus((rho, +theta), size=1., intensity=1.) )
         model.R += np.random.uniform(0,0.05,model.R.shape)
-
+                             
         model.run(duration=5*second, dt=5*millisecond, epsilon=0.0)
         x,y = decode(model.SC_V)
         print u"Δθ = %.2f: (%f,%f)" % (2*theta, x, y)
         T15[i] = x,y
-    np.save("data/double-target-intensity-2-15.npy",T15)
+    np.save("data/double-target-15-1.npy",T15)
 
 
-fig = plt.figure(figsize=(8,10),dpi=100)
+fig = plt.figure(figsize=(9.5,12),dpi=100)
 fig.patch.set_color('w')
 G = gridspec.GridSpec(3, 3)
 
@@ -118,7 +120,7 @@ ax1 = plt.subplot(G[0, 0])
 ax2 = plt.subplot(G[0, 1:3])
 model = Model()
 model.R = np.maximum( stimulus((0.75*5, -10), size=1, intensity=1) ,
-                      stimulus((5, +10), size=1, intensity=1.5) )
+                     stimulus((5, +10), size=1., intensity=1.) )
 model.R += np.random.uniform(0,0.05,model.R.shape)
 model.R *= model.R_mask
 
@@ -126,7 +128,7 @@ model.run(duration=10*second, dt=5*millisecond, epsilon=0.0)
 polar_frame(ax1, legend=False, labels=False,reduced=True)
 polar_imshow(ax1, model.R,reduced=True)
 '''
-if zoom:
+    if zoom:
     zax = zoomed_inset_axes(ax1, 6, loc=1)
     polar_frame(zax, zoom=True)
     zax.set_xlim(0.0, 0.1)
@@ -136,7 +138,7 @@ if zoom:
     zax.set_frame_on(True)
     mark_inset(ax1, zax, loc1=2, loc2=4, fc="none", ec="0.5")
     polar_imshow(zax, model.R)
-'''
+    '''
 logpolar_frame(ax2, legend=False, labels=False)
 logpolar_imshow(ax2, model.SC_V)
 ax1.text(-0.05, 1.0, 'a', va='top', ha='right',
@@ -147,14 +149,14 @@ ax1 = plt.subplot(G[1,0])
 ax2 = plt.subplot(G[1,1:3])
 model = Model()
 model.R = np.maximum( stimulus((0.75*5, -25), size=1, intensity=1) ,
-                      stimulus((5, +25), size=1, intensity=1.5) )
+                     stimulus((5, +25), size=1., intensity=1.) )
 model.R += np.random.uniform(0,0.05,model.R.shape)
 model.R *= model.R_mask
 model.run(duration=10*second, dt=5*millisecond, epsilon=0.0)
 polar_frame(ax1, legend=False, labels=False,reduced=True)
 polar_imshow(ax1, model.R,reduced=True)
 '''
-if zoom:
+    if zoom:
     zax = zoomed_inset_axes(ax1, 6, loc=1)
     polar_frame(zax, zoom=True)
     zax.set_xlim(0.0, 0.1)
@@ -164,7 +166,7 @@ if zoom:
     zax.set_frame_on(True)
     mark_inset(ax1, zax, loc1=2, loc2=4, fc="none", ec="0.5")
     polar_imshow(zax, model.R)
-'''
+    '''
 logpolar_frame(ax2, legend=False, labels=False)
 logpolar_imshow(ax2, model.SC_V)
 ax1.text(-0.05, 1.0, 'b', va='top', ha='right',
@@ -179,25 +181,24 @@ Y = T10[:,1]
 plt.scatter( X, Y, s=20, color="b", edgecolor="b", alpha=.25,facecolors='none')
 Y = T5[:,1]
 plt.scatter( X, Y, s=20, color="g", edgecolor="g", alpha=.25,facecolors='none')
-plt.axvline(38, color='r')
-plt.axvline(39, color='b')
-plt.axvline(42, color='g')
+plt.axvline(28, color='r')
+plt.axvline(31, color='b')
+plt.axvline(39, color='g')
 plt.xlim(18,92)
 plt.ylim(-0.5,+0.5)
 
 plt.xlabel(u"Relative distance between targets (degrees)")
 plt.ylabel(u"Normalized y position")
 ax.grid(b=False)
-plt.text(20, 0, 'a',
-         ha="center", va="center", size=15, fontweight='bold',
-         bbox=dict(boxstyle='round', fc="w", ec="k"))
+    #plt.text(20, 0, 'a',
+    #    ha="center", va="center", size=15, fontweight='bold',
+#     bbox=dict(boxstyle='round', fc="w", ec="k"))
 
-plt.text(50, +.2, 'b',
-         ha="center", va="center", size=15, fontweight='bold',
-         bbox=dict(boxstyle='round', fc="w", ec="k"))
+#plt.text(50, +.2, 'b',
+#         ha="center", va="center", size=15, fontweight='bold',
+#         bbox=dict(boxstyle='round', fc="w", ec="k"))
 fig.subplots_adjust(left=0.09, bottom=0.05, right=0.95, top=0.95,
                     wspace=0.05, hspace=0.15)
 plt.savefig("figures/Fig-6.eps")
 plt.savefig("figures/Fig-6.pdf")
-
 plt.show()

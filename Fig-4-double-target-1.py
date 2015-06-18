@@ -41,7 +41,7 @@ from stimulus import *
 from parameters import *
 from projections import *
 import matplotlib
-font = {'size'   : 18}
+font = {'size'   : 16}
 matplotlib.rc('font', **font)
 
 # Decode function
@@ -112,7 +112,7 @@ else:
     np.save("data/double-target-intensity-15.npy",T15)
 
 
-fig = plt.figure(figsize=(10,11),dpi=100)
+fig = plt.figure(figsize=(9.5,12),dpi=100)
 fig.patch.set_color('w')
 G = gridspec.GridSpec(3, 3)
 
@@ -190,13 +190,13 @@ plt.ylim(-0.5,+0.5)
 plt.xlabel(u"Relative distance between targets (degrees)")
 plt.ylabel(u"Normalized y position")
 ax.grid(b=False)
-plt.text(20, 0, 'a',
-         ha="center", va="center", size=15, fontweight='bold',
-         bbox=dict(boxstyle='round', fc="w", ec="k"))
+    #plt.text(20, 0, 'a',
+    #     ha="center", va="center", size=15, fontweight='bold',
+#    bbox=dict(boxstyle='round', fc="w", ec="k"))
 
-plt.text(50, +.2, 'b',
-         ha="center", va="center", size=15, fontweight='bold',
-         bbox=dict(boxstyle='round', fc="w", ec="k"))
+#plt.text(50, +.2, 'b',
+#        ha="center", va="center", size=15, fontweight='bold',
+#        bbox=dict(boxstyle='round', fc="w", ec="k"))
 fig.subplots_adjust(left=0.09, bottom=0.05, right=0.95, top=0.95,
                     wspace=0.05, hspace=0.15)
 #ax.set_rasterized(True)
