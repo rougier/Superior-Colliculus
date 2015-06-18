@@ -36,13 +36,18 @@ from graphics import *
 from projections import *
 from stimulus import *
 
+
+
 if __name__ == '__main__':
+    import matplotlib
     import matplotlib.pyplot as plt
     from matplotlib.patches import Polygon
     from mpl_toolkits.axes_grid1 import ImageGrid
     from mpl_toolkits.axes_grid1.inset_locator import zoomed_inset_axes
     from mpl_toolkits.axes_grid1.inset_locator import mark_inset
+    font = {'size'   : 18}
 
+    matplotlib.rc('font', **font)
     P = retina_projection()
 
     # Checkerboard pattern for retina

@@ -38,13 +38,14 @@ from matplotlib.ticker import MultipleLocator, FormatStrFormatter
 from mpl_toolkits.axes_grid1.inset_locator import inset_axes
 from matplotlib.patches import Rectangle
 import matplotlib.patheffects as PathEffects
-
+import matplotlib
 from model import *
 from graphics import *
 from stimulus import *
 from parameters import *
 from projections import *
-
+font = {'size'   : 18}
+matplotlib.rc('font', **font)
 # Target positions (rho,theta)
 targets = []
 targets_rho   = [2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 20] # -> X
@@ -91,7 +92,7 @@ def run(ax, lesion, name, title):
         ax.plot([S[i,0],S[i,2]],[S[i,1],S[i,3]], color='k', lw=.5)
     ax.scatter(S[:,0], S[:,1], s=35, color='k', marker='o', lw=.5)
     ax.scatter(S[:,2], S[:,3], s=35, color='k', marker='o', facecolors='w', lw=.5)
-    ax.text(0,-1, title, ha="left", va="top", fontsize=14)
+    ax.text(0,-1, title, ha="left", va="top", fontsize=18)
     if lesion is not None:
         position,size = lesion
         rho,theta = position
@@ -143,7 +144,7 @@ if 1:
     matplotlib.rcParams['xtick.direction'] = 'out'
     matplotlib.rcParams['ytick.direction'] = 'out'
 
-    fig = plt.figure(figsize=(8,12))
+    fig = plt.figure(figsize=(10,12))
     fig.patch.set_color('w')
     G = gridspec.GridSpec(3, 2)
     G.update(left=0.07, right=0.95, wspace=0.2, hspace=0.2, bottom=0.05,top=0.95)
@@ -196,9 +197,9 @@ if 1:
     #[t.set_color('0.5') for t in ax.xaxis.get_ticklabels()]
     #[t.set_color('0.5') for t in ax.yaxis.get_ticklabels()]
     [t.set_alpha(0.0) for t in ax.yaxis.get_ticklines()]
-    ax.legend(frameon=False, fontsize=12)
+    ax.legend(frameon=False, fontsize=15)
     plt.text(0, 21, "Mean encoding error along rosto-caudal axis",
-             va='bottom',ha='left',color='k', fontsize=16)
+             va='bottom',ha='left',color='k', fontsize=18)
 
     ax.annotate("Lesion site",
                   xy=(5, 0), xycoords='data',
@@ -242,9 +243,9 @@ if 1:
     #[t.set_color('0.5') for t in ax.xaxis.get_ticklabels()]
     #[t.set_color('0.5') for t in ax.yaxis.get_ticklabels()]
     [t.set_alpha(0.0) for t in ax.yaxis.get_ticklines()]
-    ax.legend(frameon=False, fontsize=12)
+    ax.legend(frameon=False, fontsize=15)
     plt.text(-50, 21, "Mean encoding error along vertical axis",
-             va='bottom',ha='left',color='k', fontsize=16)
+             va='bottom',ha='left',color='k', fontsize=18)
     ax.annotate("Lesion site",
                   xy=(0, 0), xycoords='data',
                   xytext=(0, -2.5), textcoords='data', ha='center',
@@ -252,7 +253,7 @@ if 1:
     ax.text(0.0, 1.0, 'd', va='top', ha='right',
             transform=ax.transAxes, fontsize=20, fontweight='bold')
 
-    plt.savefig("figures/Fig-2.pdf")
+    plt.savefig("figures/Fig-3.pdf")
     #plt.tight_layout()
-    plt.savefig("figures/Fig-2.eps",format='eps', dpi=1000)
+    plt.savefig("figures/Fig-3.eps",format='eps', dpi=1000)
     plt.show()
